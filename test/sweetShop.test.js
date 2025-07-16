@@ -23,3 +23,18 @@ describe('SweetShop - Add Sweet', () => {
     expect(() => shop.addSweet(sweet2)).toThrow("Sweet with this ID already exists.");
   });
 });
+
+describe('SweetShop - Delete Sweet', () => {
+  it('should delete a sweet by ID', () => {
+    const shop = new SweetShop();
+    const sweet = { id: 1002, name: "Gajar Halwa", category: "Vegetable-Based", price: 30, quantity: 15 };
+    shop.addSweet(sweet);
+    shop.deleteSweet(1002);
+    expect(shop.getAllSweets()).not.toContainEqual(sweet);
+  });
+
+  it('should throw an error when deleting a sweet that does not exist', () => {
+    const shop = new SweetShop();
+    expect(() => shop.deleteSweet(9999)).toThrow("Sweet not found.");
+  });
+});

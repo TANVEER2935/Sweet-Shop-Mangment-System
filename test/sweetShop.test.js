@@ -65,3 +65,24 @@ describe('SweetShop - Search Sweets', () => {
   });
 });
 
+describe('SweetShop - Sort Sweets', () => {
+  let shop;
+
+  beforeEach(() => {
+    shop = new SweetShop();
+    shop.addSweet({ id: 1, name: "Gulab Jamun", category: "Milk-Based", price: 10, quantity: 50 });
+    shop.addSweet({ id: 2, name: "Kaju Katli", category: "Nut-Based", price: 50, quantity: 20 });
+    shop.addSweet({ id: 3, name: "Gajar Halwa", category: "Vegetable-Based", price: 30, quantity: 15 });
+  });
+
+  it('should sort sweets by price ascending', () => {
+    const sorted = shop.sortSweetsBy("price");
+    expect(sorted[0].price).toBe(10);
+    expect(sorted[2].price).toBe(50);
+  });
+
+  it('should sort sweets by name alphabetically', () => {
+    const sorted = shop.sortSweetsBy("name");
+    expect(sorted[0].name).toBe("Gajar Halwa");
+  });
+});

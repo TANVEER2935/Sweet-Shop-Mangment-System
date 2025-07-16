@@ -43,6 +43,4 @@ class SweetShop {
     
 }
 
-
-
 module.exports = SweetShop;

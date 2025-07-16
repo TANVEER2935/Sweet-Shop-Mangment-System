@@ -1,4 +1,4 @@
-const API_URL = 'https://687787b7dba809d901efcff7.mockapi.io/sweet';
+const API_URL = 'https://687787b7dba809d901efcff7.mockapi.io/Sweet';
 
 async function getSweets() {
   const res = await fetch(API_URL);
@@ -30,6 +30,11 @@ async function deleteSweet(id) {
 }
 
 function renderSweets(sweets) {
+  if (!Array.isArray(sweets)) {
+    console.error("Expected array but got:", sweets);
+    return;
+  }
+
   const tbody = document.getElementById('sweetList');
   tbody.innerHTML = '';
   sweets.forEach(s => {
@@ -40,14 +45,15 @@ function renderSweets(sweets) {
         <td class="border px-2 py-1">${s.price}</td>
         <td class="border px-2 py-1">${s.quantity}</td>
         <td class="border px-2 py-1">
-          <button onclick="purchase(${s.id}, ${s.quantity})" class="bg-yellow-500 text-white px-2 py-1 rounded">Buy</button>
-          <button onclick="restock(${s.id}, ${s.quantity})" class="bg-green-500 text-white px-2 py-1 rounded">Restock</button>
-          <button onclick="deleteSweet(${s.id})" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+          <button onclick="purchase('${s.id}', ${s.quantity})" class="bg-yellow-500 text-white px-2 py-1 rounded">Buy</button>
+          <button onclick="restock('${s.id}', ${s.quantity})" class="bg-green-500 text-white px-2 py-1 rounded">Restock</button>
+          <button onclick="deleteSweet('${s.id}')" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
         </td>
       </tr>
     `;
   });
 }
+
 
 async function purchase(id, currentQty) {
   const qty = parseInt(prompt("Enter quantity to purchase:"));

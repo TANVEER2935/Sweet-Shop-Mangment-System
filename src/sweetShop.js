@@ -32,15 +32,21 @@ class SweetShop {
     }
 
     sortSweetsBy(field) {
-    return [...this.sweets].sort((a, b) => {
-      if (typeof a[field] === "string") {
-        return a[field].localeCompare(b[field]);
-      }
-      return a[field] - b[field];
-    });
-  }
+        return [...this.sweets].sort((a, b) => {
+            if (typeof a[field] === "string") {
+                return a[field].localeCompare(b[field]);
+            }
+            return a[field] - b[field];
+        });
+    }
 
-    
+    purchaseSweet(id, quantity) {
+        const sweet = this.sweets.find(s => s.id === id);
+        if (!sweet) throw new Error("Sweet not found.");
+        if (sweet.quantity < quantity) throw new Error("Insufficient stock.");
+        sweet.quantity -= quantity;
+    }
+
 }
 
 module.exports = SweetShop;

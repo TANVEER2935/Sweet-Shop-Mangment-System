@@ -86,3 +86,20 @@ describe('SweetShop - Sort Sweets', () => {
     expect(sorted[0].name).toBe("Gajar Halwa");
   });
 });
+
+
+describe('SweetShop - Purchase Sweet', () => {
+  it('should reduce quantity after purchase', () => {
+    const shop = new SweetShop();
+    shop.addSweet({ id: 1, name: "Kaju Katli", category: "Nut-Based", price: 50, quantity: 10 });
+    shop.purchaseSweet(1, 3);
+    const sweet = shop.getAllSweets()[0];
+    expect(sweet.quantity).toBe(7);
+  });
+
+  it('should throw error if not enough stock', () => {
+    const shop = new SweetShop();
+    shop.addSweet({ id: 1, name: "Kaju Katli", category: "Nut-Based", price: 50, quantity: 2 });
+    expect(() => shop.purchaseSweet(1, 5)).toThrow("Insufficient stock.");
+  });
+});

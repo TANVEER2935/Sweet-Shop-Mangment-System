@@ -30,6 +30,16 @@ class SweetShop {
     searchByPriceRange(min, max) {
         return this.sweets.filter(s => s.price >= min && s.price <= max);
     }
+
+    sortSweetsBy(field) {
+    return [...this.sweets].sort((a, b) => {
+      if (typeof a[field] === "string") {
+        return a[field].localeCompare(b[field]);
+      }
+      return a[field] - b[field];
+    });
+  }
+
     
 }
 

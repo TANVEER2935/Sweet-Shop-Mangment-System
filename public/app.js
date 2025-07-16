@@ -28,13 +28,7 @@ async function deleteSweet(id) {
     await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
     getSweets();
 }
-
 function renderSweets(sweets) {
-    if (!Array.isArray(sweets)) {
-        console.error("Expected array but got:", sweets);
-        return;
-    }
-
     const tbody = document.getElementById('sweetList');
     tbody.innerHTML = '';
     sweets.forEach(s => {
@@ -44,15 +38,17 @@ function renderSweets(sweets) {
         <td class="border px-2 py-1">${s.category}</td>
         <td class="border px-2 py-1">${s.price}</td>
         <td class="border px-2 py-1">${s.quantity}</td>
-        <td class="border px-2 py-1">
+        <td class="border px-2 py-1 space-x-1">
           <button onclick="purchase('${s.id}', ${s.quantity})" class="bg-yellow-500 text-white px-2 py-1 rounded">Buy</button>
           <button onclick="restock('${s.id}', ${s.quantity})" class="bg-green-500 text-white px-2 py-1 rounded">Restock</button>
+          <button onclick="updatePrice('${s.id}', ${s.price})" class="bg-purple-500 text-white px-2 py-1 rounded">Update Price</button>
           <button onclick="deleteSweet('${s.id}')" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
         </td>
       </tr>
     `;
     });
 }
+
 
 
 async function purchase(id, currentQty) {
@@ -73,6 +69,21 @@ async function restock(id, currentQty) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity: currentQty + qty })
     });
+    getSweets();
+}
+async function updatePrice(id, currentPrice) {
+    const newPrice = parseFloat(prompt("Enter new price:", currentPrice));
+    if (isNaN(newPrice) || newPrice <= 0) {
+        alert("Invalid price");
+        return;
+    }
+
+    await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ price: newPrice })
+    });
+
     getSweets();
 }
 
@@ -119,6 +130,9 @@ function applyFilter() {
             renderSweets(sweets);
         });
 }
+
+
+
 
 
 getSweets();
